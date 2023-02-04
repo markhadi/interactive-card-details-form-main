@@ -70,12 +70,16 @@
                 type="number"
                 id="month"
                 placeholder="MM"
+                min="1"
+                max="12"
                 autocomplete="off"
               />
               <input
                 type="number"
                 id="year"
                 placeholder="YY"
+                min="23"
+                max="28"
                 autocomplete="off"
               />
             </div>
@@ -87,6 +91,7 @@
               id="cvc"
               type="number"
               placeholder="e.g. 123"
+              min="100"
               autocomplete="off"
             />
             <span class="info-err">Can’t be blank</span>

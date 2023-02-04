@@ -35,14 +35,6 @@ form.addEventListener("submit", (event) => {
     hideError(inputName, 0);
   }
 
-  if (!inputNumber.value) {
-    showError(inputNumber, 1, "Can’t be blank");
-  } else if (!/^\d+(\s\d+)*$/.test(inputNumber.value)) {
-    showError(inputNumber, 1, "Wrong format, numbers only");
-  } else {
-    hideError(inputNumber, 1);
-  }
-
   if (!inputMonth.value) {
     showError(inputMonth, 2, "Can’t be blank");
   } else {
@@ -59,6 +51,16 @@ form.addEventListener("submit", (event) => {
     showError(inputCVC, 3, "Can’t be blank");
   } else {
     hideError(inputCVC, 3);
+  }
+
+  if (!inputNumber.value) {
+    showError(inputNumber, 1, "Can’t be blank");
+  } else if (!/^\d+(\s\d+)*$/.test(inputNumber.value)) {
+    return showError(inputNumber, 1, "Wrong format, numbers only");
+  } else if (inputNumber.value.length < 19) {
+    return showError(inputNumber, 1, "Card number must be 16 numbers");
+  } else {
+    hideError(inputNumber, 1);
   }
 
   if (
@@ -78,24 +80,41 @@ form.addEventListener("submit", (event) => {
   }
 });
 
-const maxInput = (inputName, maxInput) => {
-  if (inputName.value.length > maxInput) {
-    inputName.value = inputName.value.slice(0, maxInput);
+inputNumber.addEventListener("input", (e) => {
+  e.preventDefault();
+
+  let formatText = e.target.value;
+  formatText = formatText.substring(0, 19);
+  formatText = formatText
+    .replace(/\s/g, "")
+    .replace(new RegExp(`(.{${4}})`, "g"), "$1 ")
+    .trim();
+
+  e.target.value = formatText;
+
+  // pattern = pattern.replace(/\s/g, '') : will remove all spaces in the text.
+  // .replace(new RegExp((.{${4}}), 'g'), '$1 ') : will add a space after every 4 characters.
+  // .trim(); : will remove spaces at the beginning and end of the text.
+});
+
+const maxLength = (inputName, maxLength) => {
+  if (inputName.value.length > maxLength) {
+    inputName.value = inputName.value.substring(0, maxLength);
   }
 };
 
 inputMonth.addEventListener("input", () => {
-  maxInput(inputMonth, 2);
+  maxLength(inputMonth, 2);
 });
 
 inputYear.addEventListener("input", () => {
-  maxInput(inputYear, 2);
+  maxLength(inputYear, 2);
 });
 
 inputCVC.addEventListener("input", () => {
-  maxInput(inputCVC, 3);
+  maxLength(inputCVC, 3);
 });
 
 complete.addEventListener("click", () => {
-  javascript: location.reload(true);
+  location.reload(true);
 });

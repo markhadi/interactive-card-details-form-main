@@ -1,6 +1,9 @@
 :root {
-  --active-input-border-1: hsl(249, 99%, 64%);
-  --active-input-border-2: hsl(278, 94%, 30%);
+  --active-input-border: linear-gradient(
+    90deg,
+    hsl(249, 99%, 64%) 0%,
+    hsl(278, 94%, 30%) 100%
+  );
   --input-errors: hsl(0, 100%, 66%);
   --Light-grayish-violet: hsl(270, 3%, 87%);
   --Dark-grayish-violet: hsl(279, 6%, 55%);
@@ -142,17 +145,9 @@ form {
   color: var(--Very-dark-violet);
 }
 
-.form-group input::placeholder {
-  color: var(--Light-grayish-violet);
-}
-
 .form-group input:focus {
   border: 1px solid;
-  border-color: linear-gradient(
-    90deg,
-    var(--active-input-border-1) 0%,
-    var(--active-input-border-2) 100%
-  ) !important;
+  border-color: var(--active-input-border) !important;
 }
 
 .info-err {
@@ -217,6 +212,7 @@ form {
 }
 
 .complete img {
+  margin: 0 auto;
   margin-bottom: 3.8rem;
 }
 
@@ -332,10 +328,5 @@ form {
     padding: 0;
     width: 100%;
     max-width: 38.1rem;
-  }
-
-  .complete img {
-    margin: 0 auto;
-    margin-bottom: 3.8rem;
   }
 }
