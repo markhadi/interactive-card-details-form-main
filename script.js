@@ -32,8 +32,8 @@ let inputMonthValue = "00";
 let inputYearValue = "00";
 let inputCVCValue;
 
-const validateInput = (input, arrInfoErr, length) => {
-  if (!length) {
+const validateInput = (input, arrInfoErr, wordLength) => {
+  if (!wordLength) {
     if (!input.value) {
       showError(input, arrInfoErr, "Can’t be blank");
     } else {
@@ -45,11 +45,11 @@ const validateInput = (input, arrInfoErr, length) => {
       showError(input, arrInfoErr, "Can’t be blank");
     } else if (!/^\d+(\s\d+)*$/.test(input.value)) {
       showError(input, arrInfoErr, "Wrong format, numbers only");
-    } else if (input.value.length < length) {
-      if (length > 3) {
+    } else if (input.value.length < wordLength) {
+      if (wordLength > 3) {
         showError(input, arrInfoErr, "Card number must be 16 numbers");
       } else {
-        showError(input, arrInfoErr, `must be ${length} numbers`);
+        showError(input, arrInfoErr, `must be ${wordLength} numbers`);
       }
     } else {
       hideError(input, arrInfoErr);
@@ -99,10 +99,9 @@ inputNumber.addEventListener("input", (e) => {
   // .trim(); : will remove spaces at the beginning and end of the text.
 });
 
-const maxLength = (input, maxLength) => {
-  if (input.value.length > maxLength || /\s/.test(input.value)) {
-    let formatText = input.value;
-    formatText = formatText.substring(0, maxLength).replace(/\s/g, "");
+const deleteSpace = (input) => {
+  if (/\s/.test(input.value)) {
+    let formatText = input.value.replace(/\s/g, "");
 
     input.value = formatText;
   }
@@ -111,7 +110,7 @@ const maxLength = (input, maxLength) => {
 inputMonth.addEventListener("input", (e) => {
   e.preventDefault();
 
-  maxLength(inputMonth, 2);
+  deleteSpace(inputMonth);
   inputMonthValue = e.target.value;
   cardExpDate.textContent = inputMonthValue + "/" + inputYearValue;
 });
@@ -119,7 +118,7 @@ inputMonth.addEventListener("input", (e) => {
 inputYear.addEventListener("input", (e) => {
   e.preventDefault();
 
-  maxLength(inputYear, 2);
+  deleteSpace(inputYear);
   inputYearValue = e.target.value;
   cardExpDate.textContent = inputMonthValue + "/" + inputYearValue;
 });
@@ -127,7 +126,7 @@ inputYear.addEventListener("input", (e) => {
 inputCVC.addEventListener("input", (e) => {
   e.preventDefault();
 
-  maxLength(inputCVC, 3);
+  deleteSpace(inputCVC);
   inputCVCValue = e.target.value;
   cardCVC.textContent = inputCVCValue;
 });
