@@ -26,59 +26,51 @@ const hideError = (input, arrInfoErr) => {
   infoErr[arrInfoErr].classList.remove("d-block");
 };
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
+let inputNameValue;
+let inputNumberValue;
+let inputMonthValue;
+let inputYearValue;
+let inputCVCValue;
 
-  if (!inputName.value) {
-    showError(inputName, 0, "Can’t be blank");
+const validateInput = (input, arrInfoErr, length) => {
+  if (!length) {
+    if (!input.value) {
+      showError(input, arrInfoErr, "Can’t be blank");
+    } else {
+      hideError(input, arrInfoErr);
+      inputNameValue = input.value;
+    }
   } else {
-    hideError(inputName, 0);
-  }
+    if (!input.value) {
+      showError(input, arrInfoErr, "Can’t be blank");
+    } else if (!/^\d+(\s\d+)*$/.test(input.value)) {
+      showError(input, arrInfoErr, "Wrong format, numbers only");
+    } else if (input.value.length < length) {
+      if (length > 3) {
+        showError(input, arrInfoErr, "Card number must be 16 numbers");
+      } else {
+        showError(input, arrInfoErr, `must be ${length} numbers`);
+      }
+    } else {
+      hideError(input, arrInfoErr);
 
-  if (!inputMonth.value) {
-    showError(inputMonth, 2, "Can’t be blank");
-  } else {
-    hideError(inputMonth, 2);
+      switch (input) {
+        case inputNumber:
+          inputNumberValue = input.value;
+          break;
+        case inputMonth:
+          inputMonthValue = input.value;
+          break;
+        case inputYear:
+          inputYearValue = input.value;
+          break;
+        case inputCVC:
+          inputCVCValue = input.value;
+          break;
+      }
+    }
   }
-
-  if (!inputYear.value) {
-    showError(inputYear, 2, "Can’t be blank");
-  } else {
-    hideError(inputYear, 2);
-  }
-
-  if (!inputCVC.value) {
-    showError(inputCVC, 3, "Can’t be blank");
-  } else {
-    hideError(inputCVC, 3);
-  }
-
-  if (!inputNumber.value) {
-    showError(inputNumber, 1, "Can’t be blank");
-  } else if (!/^\d+(\s\d+)*$/.test(inputNumber.value)) {
-    return showError(inputNumber, 1, "Wrong format, numbers only");
-  } else if (inputNumber.value.length < 19) {
-    return showError(inputNumber, 1, "Card number must be 16 numbers");
-  } else {
-    hideError(inputNumber, 1);
-  }
-
-  if (
-    inputName.value &&
-    inputNumber.value &&
-    inputMonth.value &&
-    inputYear.value &&
-    inputCVC.value
-  ) {
-    cardName.textContent = inputName.value;
-    cardNumber.textContent = inputNumber.value;
-    cardExpDate.textContent = inputMonth.value + "/" + inputYear.value;
-    cardCVC.textContent = inputCVC.value;
-
-    form.classList.add("d-none");
-    complete.classList.add("d-block");
-  }
-});
+};
 
 inputNumber.addEventListener("input", (e) => {
   e.preventDefault();
@@ -92,14 +84,17 @@ inputNumber.addEventListener("input", (e) => {
 
   e.target.value = formatText;
 
-  // pattern = pattern.replace(/\s/g, '') : will remove all spaces in the text.
-  // .replace(new RegExp((.{${4}}), 'g'), '$1 ') : will add a space after every 4 characters.
+  // pattern = pattern.replace(/\s/g, "") : will remove all spaces in the text.
+  // .replace(new RegExp(`(.{${4}})`, "g"), "$1 ") : will add a space after every 4 characters.
   // .trim(); : will remove spaces at the beginning and end of the text.
 });
 
-const maxLength = (inputName, maxLength) => {
-  if (inputName.value.length > maxLength) {
-    inputName.value = inputName.value.substring(0, maxLength);
+const maxLength = (input, maxLength) => {
+  if (input.value.length > maxLength || /\s/.test(input.value)) {
+    let formatText = input.value;
+    formatText = formatText.substring(0, maxLength).replace(/\s/g, "");
+
+    input.value = formatText;
   }
 };
 
@@ -113,6 +108,38 @@ inputYear.addEventListener("input", () => {
 
 inputCVC.addEventListener("input", () => {
   maxLength(inputCVC, 3);
+});
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  inputNameValue = "";
+  inputNumberValue = "";
+  inputMonthValue = "";
+  inputYearValue = "";
+  inputCVCValue = "";
+
+  validateInput(inputName, 0);
+  validateInput(inputNumber, 1, 19);
+  validateInput(inputMonth, 2, 2);
+  validateInput(inputYear, 2, 2);
+  validateInput(inputCVC, 3, 3);
+
+  if (
+    inputNameValue &&
+    inputNumberValue &&
+    inputMonthValue &&
+    inputYearValue &&
+    inputCVCValue
+  ) {
+    cardName.textContent = inputNameValue;
+    cardNumber.textContent = inputNumberValue;
+    cardExpDate.textContent = inputMonthValue + "/" + inputYearValue;
+    cardCVC.textContent = inputCVCValue;
+
+    form.classList.add("d-none");
+    complete.classList.add("d-block");
+  }
 });
 
 complete.addEventListener("click", () => {

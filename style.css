@@ -234,16 +234,16 @@ form {
   body {
     background-image: url("./images/bg-main-desktop.png");
     background-repeat: no-repeat;
-    background-size: 48.3rem 100%;
+    background-size: 33.5% 100%;
   }
 
   main {
-    max-width: 105rem;
-    margin: 0 0 0 16.4rem;
+    max-width: 111.2rem;
+    margin: auto;
     padding: 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 12.7rem;
     height: 100vh;
   }
 
