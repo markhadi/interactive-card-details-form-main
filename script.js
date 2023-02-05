@@ -28,8 +28,8 @@ const hideError = (input, arrInfoErr) => {
 
 let inputNameValue;
 let inputNumberValue;
-let inputMonthValue;
-let inputYearValue;
+let inputMonthValue = "00";
+let inputYearValue = "00";
 let inputCVCValue;
 
 const validateInput = (input, arrInfoErr, length) => {
@@ -72,6 +72,13 @@ const validateInput = (input, arrInfoErr, length) => {
   }
 };
 
+inputName.addEventListener("input", (e) => {
+  e.preventDefault();
+
+  inputNameValue = e.target.value;
+  cardName.textContent = inputNameValue;
+});
+
 inputNumber.addEventListener("input", (e) => {
   e.preventDefault();
 
@@ -83,6 +90,9 @@ inputNumber.addEventListener("input", (e) => {
     .trim();
 
   e.target.value = formatText;
+
+  inputNumberValue = e.target.value;
+  cardNumber.textContent = inputNumberValue;
 
   // pattern = pattern.replace(/\s/g, "") : will remove all spaces in the text.
   // .replace(new RegExp(`(.{${4}})`, "g"), "$1 ") : will add a space after every 4 characters.
@@ -98,16 +108,28 @@ const maxLength = (input, maxLength) => {
   }
 };
 
-inputMonth.addEventListener("input", () => {
+inputMonth.addEventListener("input", (e) => {
+  e.preventDefault();
+
   maxLength(inputMonth, 2);
+  inputMonthValue = e.target.value;
+  cardExpDate.textContent = inputMonthValue + "/" + inputYearValue;
 });
 
-inputYear.addEventListener("input", () => {
+inputYear.addEventListener("input", (e) => {
+  e.preventDefault();
+
   maxLength(inputYear, 2);
+  inputYearValue = e.target.value;
+  cardExpDate.textContent = inputMonthValue + "/" + inputYearValue;
 });
 
-inputCVC.addEventListener("input", () => {
+inputCVC.addEventListener("input", (e) => {
+  e.preventDefault();
+
   maxLength(inputCVC, 3);
+  inputCVCValue = e.target.value;
+  cardCVC.textContent = inputCVCValue;
 });
 
 form.addEventListener("submit", (e) => {
@@ -115,8 +137,8 @@ form.addEventListener("submit", (e) => {
 
   inputNameValue = "";
   inputNumberValue = "";
-  inputMonthValue = "";
-  inputYearValue = "";
+  inputMonthValue = "00";
+  inputYearValue = "00";
   inputCVCValue = "";
 
   validateInput(inputName, 0);
