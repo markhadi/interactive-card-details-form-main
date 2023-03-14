@@ -13,7 +13,7 @@ const inputCVC = document.querySelector("#cvc");
 const infoErr = document.querySelectorAll(".info-err");
 const complete = document.querySelector(".complete");
 
-console.log(infoErr);
+console.log(input);
 
 const showError = (input, arrInfoErr, message) => {
   input.classList.add("input-err");
@@ -51,6 +51,8 @@ const validateInput = (input, arrInfoErr, wordLength) => {
       } else {
         showError(input, arrInfoErr, `must be ${wordLength} numbers`);
       }
+    } else if (parseInt(inputMonthValue) > 12) {
+      showError(input, arrInfoErr, "Month input must not be greater than 12!");
     } else {
       hideError(input, arrInfoErr);
 
