@@ -13,8 +13,6 @@ const inputCVC = document.querySelector("#cvc");
 const infoErr = document.querySelectorAll(".info-err");
 const complete = document.querySelector(".complete");
 
-console.log(input);
-
 const showError = (input, arrInfoErr, message) => {
   input.classList.add("input-err");
   infoErr[arrInfoErr].classList.add("d-block");
